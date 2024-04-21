@@ -2,15 +2,15 @@
 
 class UsersController < ApplicationController
   def create
-    user = User.new(user_params)
+    user_form = UserForm.new(user_params)
 
-    if user.save
-      payload = { id: user.id }
+    if user_form.save
+      payload = { id: user_form.user.id }
       token = JwtHelper.encode(payload)
-      render json: { user: UserBlueprint.render_as_hash(user, view: :full),
+      render json: { user: UserBlueprint.render_as_hash(user_form.user, view: :full),
                      token: }, status: :created
     else
-      render json: { messages: user.errors.full_messages }, status: :not_found
+      render json: { messages: user_form.errors.full_messages }, status: :not_found
     end
   end
 

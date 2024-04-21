@@ -32,6 +32,6 @@ class ApplicationController < ActionController::API
   private
 
   def response_json_msg(message, status)
-    render json: { messages: [message] }, status: status
+    render json: { messages: [message] }, status:
   end
 end
