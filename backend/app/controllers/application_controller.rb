@@ -16,20 +16,17 @@ class ApplicationController < ActionController::API
 
   def current_user
     token = request.headers['Authentication-Token']
-    return if token == 'undefined'
+    return if token.blank? || token == 'undefined'
 
     User.find(JwtHelper.decode(token)['id'])
-  rescue ActiveRecord::RecordNotFound
-    response_json_msg('You are not authenticated', :unauthorized)
+  rescue JWT::DecodeError
   end
 
   def logged_in_user
-    return unless current_user.nil?
+    return if current_user.present?
 
     response_json_msg('You need to login', :forbidden)
   end
-
-  private
 
   def response_json_msg(message, status)
     render json: { messages: [message] }, status:

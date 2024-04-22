@@ -17,6 +17,7 @@ gem 'config'
 gem 'oj'
 gem 'active_storage_validations'
 gem 'bootsnap', require: false
+gem 'sidekiq'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'

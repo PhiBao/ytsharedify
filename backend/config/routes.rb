@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   resources :sessions, only: :create
   resources :users, only: :create
+  resources :videos, only: %i[index create]
 
   mount ActionCable.server => '/cable'
 end

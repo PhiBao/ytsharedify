@@ -1,25 +1,24 @@
 # frozen_string_literal: true
 
 class VideosController < ApplicationController
-  before_action :authenticate_user!
+  before_action :logged_in_user, except: :index
 
   def index
-    @videos = Video.all
-    render json: @videos
+    page = params[:page] || 1
+    list = Video.includes(:user).newest
+
+    render json: VideoBlueprint.render(list.page(page), root: :list, view: :normal, meta: { total: list.length })
   end
 
   def create
-    @video = Video.new(video_params)
-    if @video.save
-      render json: @video, status: :created
-    else
-      render json: { errors: @video.errors.full_messages }, status: :unprocessable_entity
-    end
+    VideoDetailsJob.perform_later(video_params[:url], current_user.id)
+
+    response_json_msg('Video shared, details are being fetched.', :created)
   end
 
   private
 
   def video_params
-    params.require(:video).permit(:title, :url)
+    params.require(:video).permit(:url)
   end
 end
