@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 
   def create
     if @user&.authenticate(session_params[:password])
-      payload = { id: @user.id }
+      payload = { id: @user.id, username: @user.username }
       token = JwtHelper.encode(payload)
       render json: { token:, user: UserBlueprint.render_as_hash(@user, view: :full),
                      remember_me: session_params[:remember_me] }, status: :ok
