@@ -10,11 +10,16 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "baseUrl": "src",
     "paths": {
-      "*": ["types/*"]
+      "*": [
+        "types/*"
+      ]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
