@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Container,
   Grid,
@@ -9,8 +9,11 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Cable from "actioncable";
 
-import { Video } from "../../types/index";
+import { Video, Notification } from "../../types/index";
+import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   text: {
@@ -27,10 +30,29 @@ const VideoList: React.FC = () => {
   const [list, setList] = useState<Video[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     fetchVideos();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      const cable = Cable.createConsumer(
+        process.env.REACT_APP_CABLE_ENDPOINT || ""
+      );
+      cable.subscriptions.create("NotificationsChannel", {
+        received: async (data: Notification) => {
+          setList((prevList: Video[]) => [data.notification, ...prevList]);
+          if (data.notification.user.id !== user.id) {
+            toast.success(
+              `New video ${data.notification.title} shared by ${data.notification.user.username}`
+            );
+          }
+        },
+      });
+    }
+  }, [user]);
 
   const fetchVideos = async () => {
     try {

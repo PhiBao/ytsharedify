@@ -13,10 +13,10 @@ const App: React.FC = () => {
       <Router>
         <AuthProvider>
           <Header />
+          <Routes>
+            <Route path="/" element={<VideoList />} />
+          </Routes>
         </AuthProvider>
-        <Routes>
-          <Route path="/" element={<VideoList />} />
-        </Routes>
       </Router>
     </>
   );

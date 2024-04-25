@@ -5,8 +5,10 @@
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
+    "@types/actioncable": "^5.2.11",
     "@types/js-cookie": "^3.0.6",
     "@types/jwt-decode": "^3.1.0",
+    "actioncable": "^5.2.8-1",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "js-cookie": "^3.0.5",

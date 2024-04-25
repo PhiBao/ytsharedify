@@ -11,3 +11,7 @@ export interface Video {
   description: string;
   user: User;
 }
+
+export interface Notification {
+  notification: Video;
+}
