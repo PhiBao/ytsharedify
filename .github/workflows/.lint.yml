@@ -1,0 +1,70 @@
+name: Code style and tests
+
+on: [push, pull_request]
+
+jobs:
+  backend:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_database
+        ports:
+          - 5432:5432
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.0
+          bundler-cache: true
+      - name: Install yt-dlp
+        run: sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp
+      - name: Install dependencies
+        run: bundle install
+        working-directory: backend
+      - name: Set up DB
+        run: bundle exec rails db:setup
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_database
+        working-directory: backend
+      - name: Start Sidekiq
+        run: bundle exec sidekiq &
+        working-directory: backend
+      - name: rubocop
+        run: bundle exec rubocop --parallel
+        working-directory: backend
+      - name: rspec
+        run: bundle exec rspec
+        working-directory: backend
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_database
+
+  frontend:
+    name: Frontend tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: frontend
+      - name: Run tests
+        run: npm test
+        working-directory: frontend
