@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../contexts/AuthContext";
 import authService from "../../services/authService";
 
-const RegisterDialog: React.FC = () => {
+const LoginDialog: React.FC = () => {
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -99,4 +99,4 @@ const RegisterDialog: React.FC = () => {
   );
 };
 
-export default RegisterDialog;
+export default LoginDialog;
