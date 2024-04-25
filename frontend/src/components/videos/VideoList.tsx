@@ -70,7 +70,10 @@ const VideoList: React.FC = () => {
       if (data.list.length === 0) {
         setHasMore(false);
       } else {
-        setList((prevList: Video[]) => [...prevList, ...data.list]);
+        const filterList = data.list.filter(
+          (item: Video) => !list.some((i: Video) => i.id === item.id)
+        );
+        setList((prevList: Video[]) => [...prevList, ...filterList]);
         setPage((prevPage) => prevPage + 1);
       }
     } catch (error) {
