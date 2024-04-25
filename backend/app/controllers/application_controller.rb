@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
     return if token.blank? || token == 'undefined'
 
     User.find(JwtHelper.decode(token)['id'])
-  rescue JWT::DecodeError
+  rescue JWT::DecodeError # rubocop:todo Lint/SuppressedException
   end
 
   def logged_in_user

@@ -19,7 +19,7 @@ RSpec.describe 'Users' do
     context 'when the request is valid' do
       before { post '/users', params: valid_params }
 
-      it 'creates a user' do
+      it 'creates a user' do # rubocop:todo RSpec/MultipleExpectations
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['user']).not_to be_nil
         expect(JSON.parse(response.body)['token']).not_to be_nil

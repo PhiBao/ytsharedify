@@ -10,7 +10,9 @@ RSpec.describe SessionsController do
 
   describe 'POST #create' do
     context 'with valid credentials' do
-      it 'returns a token and the user' do
+      # rubocop:todo RSpec/MultipleExpectations
+      it 'returns a token and the user' do # rubocop:todo RSpec/ExampleLength, RSpec/MultipleExpectations
+        # rubocop:enable RSpec/MultipleExpectations
         post :create, params: { user: { email: user.email, password: 'password', remember_me: true } }
         json = response.parsed_body
         expect(json['token']).not_to be_nil
@@ -21,7 +23,7 @@ RSpec.describe SessionsController do
     end
 
     context 'with invalid credentials' do
-      it 'returns an error message' do
+      it 'returns an error message' do # rubocop:todo RSpec/MultipleExpectations
         post :create, params: { user: { email: user.email, password: 'wrong password', remember_me: true } }
         json = response.parsed_body
         expect(json['messages']).to include('Invalid password')

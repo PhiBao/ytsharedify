@@ -8,7 +8,7 @@ class VideoForm
   validates :url, presence: true
   validate :user_exists
 
-  def save
+  def save # rubocop:todo Metrics/MethodLength
     if valid?
       begin
         video_details = `yt-dlp -j #{url}`

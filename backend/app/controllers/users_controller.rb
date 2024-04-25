@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     user_form = UserForm.new(user_params)
 
     if user_form.save
-      payload = { id: user_form.user.id, username: user_form.user.username}
+      payload = { id: user_form.user.id, username: user_form.user.username }
       token = JwtHelper.encode(payload)
       render json: { user: UserBlueprint.render_as_hash(user_form.user, view: :full),
                      token: }, status: :created

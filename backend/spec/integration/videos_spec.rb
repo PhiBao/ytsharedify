@@ -22,7 +22,9 @@ RSpec.describe 'Videos' do
   describe 'POST /videos' do
     context 'when user is logged in' do
       before do
+        # rubocop:todo RSpec/AnyInstance
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+        # rubocop:enable RSpec/AnyInstance
         post '/videos', params: { video: { url: valid_url } }
       end
 

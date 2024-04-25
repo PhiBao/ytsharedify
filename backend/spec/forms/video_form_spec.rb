@@ -12,11 +12,11 @@ RSpec.describe VideoForm, type: :model do
       subject { described_class.new(url: valid_url, user_id: user.id) }
 
       it 'returns true' do
-        expect(subject.save).to be true
+        expect(subject.save).to be true # rubocop:todo RSpec/NamedSubject
       end
 
       it 'creates a new video' do
-        expect { subject.save }.to change(Video, :count).by(1)
+        expect { subject.save }.to change(Video, :count).by(1) # rubocop:todo RSpec/NamedSubject
       end
     end
 
@@ -24,16 +24,20 @@ RSpec.describe VideoForm, type: :model do
       subject { described_class.new(url: invalid_url, user_id: user.id) }
 
       it 'returns false' do
-        expect(subject.save).to be false
+        expect(subject.save).to be false # rubocop:todo RSpec/NamedSubject
       end
 
       it 'does not create a new video' do
-        expect { subject.save }.not_to(change(Video, :count))
+        expect { subject.save }.not_to(change(Video, :count)) # rubocop:todo RSpec/NamedSubject
       end
 
       it 'adds an error message' do
-        subject.save
+        subject.save # rubocop:todo RSpec/NamedSubject
+        # rubocop:todo RSpec/NamedSubject
+        # rubocop:todo Layout/LineLength
         expect(subject.errors.full_messages).to include('Failed to fetch video details, make sure you provided a valid YouTube URL.')
+        # rubocop:enable Layout/LineLength
+        # rubocop:enable RSpec/NamedSubject
       end
     end
 
@@ -41,16 +45,16 @@ RSpec.describe VideoForm, type: :model do
       subject { described_class.new(url: valid_url, user_id: -1) }
 
       it 'returns false' do
-        expect(subject.save).to be false
+        expect(subject.save).to be false # rubocop:todo RSpec/NamedSubject
       end
 
       it 'does not create a new video' do
-        expect { subject.save }.not_to(change(Video, :count))
+        expect { subject.save }.not_to(change(Video, :count)) # rubocop:todo RSpec/NamedSubject
       end
 
       it 'adds an error message' do
-        subject.save
-        expect(subject.errors.full_messages).to include('User does not exist')
+        subject.save # rubocop:todo RSpec/NamedSubject
+        expect(subject.errors.full_messages).to include('User does not exist') # rubocop:todo RSpec/NamedSubject
       end
     end
   end

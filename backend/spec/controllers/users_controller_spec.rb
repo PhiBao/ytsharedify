@@ -25,7 +25,7 @@ RSpec.describe UsersController do
         end.to change(User, :count).by(1)
       end
 
-      it 'returns a token and the user' do
+      it 'returns a token and the user' do # rubocop:todo RSpec/MultipleExpectations
         post :create, params: valid_params
         json = response.parsed_body
         expect(json['token']).not_to be_nil
@@ -53,7 +53,7 @@ RSpec.describe UsersController do
         end.not_to change(User, :count)
       end
 
-      it 'returns an error message' do
+      it 'returns an error message' do # rubocop:todo RSpec/MultipleExpectations
         post :create, params: invalid_params
         json = response.parsed_body
         expect(json['messages']).to include("First name can't be blank")
